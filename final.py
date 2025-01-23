@@ -1,0 +1,18 @@
+note = list()
+note.append(input("Имя пользователя: "))
+first_title = input('Первый заголовок заметки: ')
+second_title = input('Второй заголовок заметки: ')
+third_title = input('Третий заголовок заметки: ')
+note.append(input('Описание заметки: '))
+note.append(input('Статус заметки: '))
+note.append(input("Дата создания заметки в формате 'ДД-ММ-ГГГГ': "))
+note.append(input("Дата истечения заметки в формате 'ДД-ММ-ГГГГ': "))
+
+note.append([first_title, second_title, third_title])
+
+print("Имя пользователя:", note[0])
+print('Заголовки заметки', note[5])
+print('Описание заметки', note[1])
+print('Статус заметки', note[2])
+print('Дата создания заметки', note[3])
+print('Дата истечения заметки', note[4])
