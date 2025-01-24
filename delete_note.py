@@ -34,15 +34,15 @@ def select_deleting_variables(deleting_filter):
             unique_deleting_variables = sorted(set(map(str.lower, deleting_titles)))
     else:
         unique_deleting_variables = sorted(set(map(str.lower, deleting_variables)))
-    print(*map(lambda x: f'{x + 1}. {unique_deleting_variables[x]}',
-               [i for i in range(len(unique_deleting_variables))]), sep='\n')
+    deleting_indexes = range(len(unique_deleting_variables))
     while True:
+        print(*map(lambda x: f'{x + 1}. {unique_deleting_variables[x]}', deleting_indexes), sep='\n')
         deleting_solution = input('Выберите доступный вариант для удаления заметок: ')
         if deleting_solution in unique_deleting_variables:
             return deleting_solution
-        elif int(deleting_solution) in range(1, len(unique_deleting_variables) + 1):
+        elif deleting_solution in map(str, range(1, len(unique_deleting_variables) + 1)):
             return unique_deleting_variables[int(deleting_solution) - 1]
-        print('Некорректное значение')
+        print('Некорректное значение!', 'Пожалуйста, выберите вариант из списка:', sep='\n')
 
 
 # основная функция удаления заметок
