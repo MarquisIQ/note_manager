@@ -104,6 +104,6 @@ while True:
         deleting_notes()
         continue
     break
-print('Готово\n')
+print('Создание заметок завершено, вот что у нас получилось:\n')
 print('Пользователь:', username)
 write_notes(notes)

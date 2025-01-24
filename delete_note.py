@@ -68,6 +68,7 @@ def deleting_notes():
     print('Удаление завершено')
     write_notes(notes)
 
+
 # инициализация пользовательских данных
 notes = [{
     'id': '1',
