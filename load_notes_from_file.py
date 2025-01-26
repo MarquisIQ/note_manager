@@ -29,7 +29,7 @@ def load_notes_from_file(filename):
                                 note_read[field] = reading_line.replace(note_fields[field] + ': ', '')
                                 break
 
-                if len(note_read) == len(note_fields) - 1:
+                if len(note_read) == len(note_fields):
                     notes.append(note_read.copy())
                     note_read.clear()
 
