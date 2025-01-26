@@ -480,7 +480,7 @@ sample_display_parameters = {
     'full_data': True,
     'table_view': True,
     'custom_sorting': False,
-    'sorting_option': 'id',
+    'sorting_option': 'created_date',
     'sorting_reverse': False
 }
 
