@@ -1,6 +1,21 @@
 def save_notes_to_file(notes, filename):
-    writing_notes = notes[:]
 
+    try:
+        with open(file=filename, mode='x+', encoding='utf-8') as file:
+            file.read()
+    except FileExistsError:
+        if input(f'Вы уверены, что хотите перезаписать файл "{filename}" (да/нет): ').lower() == 'нет':
+            return
+    except PermissionError:
+        print(f'Недостаточно прав для записи в файл "{file}"')
+        if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
+            return
+    except Exception as exception:
+        print(f'Во время записи в файл {filename} произошла непредвиденная ошибка {exception}')
+        if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
+            return
+
+    writing_notes = notes[:]
     for i, note in enumerate(writing_notes):
         formatted_note = writing_notes[i].copy()
         if len(formatted_note['title']) > 1:

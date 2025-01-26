@@ -1,42 +1,57 @@
 def load_notes_from_file(filename):
     try:
         with open(file=filename, mode='r', encoding='utf-8') as file:
-            global notes
-            notes.clear()
-            note_read = dict()
-            for reading_line in [line for line in map(
-                    lambda raw_line: raw_line.replace('\n', ''), file.readlines()) if line][1:]:
-                for field in note_fields:
-                    match field:
-                        case 'id':
-                            if reading_line.startswith(note_fields[field]):
-                                note_read[field] = int((reading_line.replace(f'{note_fields[field]} №', ''))[:-1])
-                                break
-                        case 'status':
-                            if reading_line.startswith(note_fields[field]):
-                                status_read = reading_line.replace(f'{note_fields[field]}: ', '')
-                                for note_status in note_statuses:
-                                    if status_read == note_statuses[note_status]:
-                                        note_read[field] = note_status
-                                        break
-                        case 'title':
-                            if reading_line.startswith(note_fields[field]):
-                                title_read = reading_line.replace(note_fields[field] + ': ', '')
-                                note_read[field] = title_read.split(', ')
-                                break
-                        case _:
-                            if reading_line.startswith(note_fields[field]):
-                                note_read[field] = reading_line.replace(note_fields[field] + ': ', '')
-                                break
-
-                if len(note_read) == len(note_fields):
-                    notes.append(note_read.copy())
-                    note_read.clear()
-
-        return notes
-
+            file.read()
     except FileNotFoundError:
-        print('Искомый файл не найден!')
+        open(file=filename, mode='x+', encoding='utf-8')
+        print(f'Файл "{filename}" не найден. Создан новый файл.')
+    except UnicodeDecodeError:
+        print(f'Произошла ошибка при декодировании файла "{filename}"')
+        if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
+            return
+    except PermissionError:
+        print(f'Недостаточно прав для чтения файла "{filename}"')
+        if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
+            return
+    except Exception as exception:
+        print(f'Во время записи в файл {filename} произошла непредвиденная ошибка {exception}')
+        if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
+           return
+
+    with open(file=filename, mode='r', encoding='utf-8') as file:
+        global notes
+        notes.clear()
+        note_read = dict()
+        for reading_line in [line for line in map(
+                lambda raw_line: raw_line.replace('\n', ''), file.readlines()) if line][1:]:
+            for field in note_fields:
+                match field:
+                    case 'id':
+                        if reading_line.startswith(note_fields[field]):
+                            note_read[field] = int((reading_line.replace(f'{note_fields[field]} №', ''))[:-1])
+                            break
+                    case 'status':
+                        if reading_line.startswith(note_fields[field]):
+                            status_read = reading_line.replace(f'{note_fields[field]}: ', '')
+                            for note_status in note_statuses:
+                                if status_read == note_statuses[note_status]:
+                                    note_read[field] = note_status
+                                    break
+                    case 'title':
+                        if reading_line.startswith(note_fields[field]):
+                            title_read = reading_line.replace(note_fields[field] + ': ', '')
+                            note_read[field] = title_read.split(', ')
+                            break
+                    case _:
+                        if reading_line.startswith(note_fields[field]):
+                            note_read[field] = reading_line.replace(note_fields[field] + ': ', '')
+                            break
+
+            if len(note_read) == len(note_fields):
+                notes.append(note_read.copy())
+                note_read.clear()
+
+    return notes
 
 
 # инициализация пользовательских параметров
