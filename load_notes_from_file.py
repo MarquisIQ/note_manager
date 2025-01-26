@@ -1,3 +1,4 @@
+# функция загрузки заметок из файла
 def load_notes_from_file(filename):
     try:
         with open(file=filename, mode='r', encoding='utf-8') as file:
@@ -20,10 +21,12 @@ def load_notes_from_file(filename):
 
     with open(file=filename, mode='r', encoding='utf-8') as file:
         global notes
-        notes.clear()
+        new_notes = list()
         note_read = dict()
-        for reading_line in [line for line in map(
-                lambda raw_line: raw_line.replace('\n', ''), file.readlines()) if line][1:]:
+        for string_index, reading_line in enumerate([line for line in map(
+                lambda raw_line: raw_line.replace('\n', ''), file.readlines()) if line]):
+            if reading_line.startswith('Список заметок:'):
+                continue
             for field in note_fields:
                 match field:
                     case 'id':
@@ -47,11 +50,19 @@ def load_notes_from_file(filename):
                             note_read[field] = reading_line.replace(note_fields[field] + ': ', '')
                             break
 
-            if len(note_read) == len(note_fields):
-                notes.append(note_read.copy())
+            if not note_read:
+                print(f'Ошибка валидации файла {filename} в строке {string_index + 1} со значением {reading_line}')
+                if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
+                    return
+            elif len(note_read) == len(note_fields):
+                new_notes.append(note_read.copy())
                 note_read.clear()
 
-    return notes
+    if not new_notes:
+        print(f'Файл {filename} пустой')
+        return
+    notes = new_notes[:]
+    return new_notes
 
 
 # инициализация пользовательских параметров
