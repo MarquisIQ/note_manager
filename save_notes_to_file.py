@@ -7,7 +7,7 @@ def save_notes_to_file(notes, filename):
         if input(f'Вы уверены, что хотите перезаписать файл "{filename}" (да/нет): ').lower() == 'нет':
             return
     except PermissionError:
-        print(f'Недостаточно прав для записи в файл "{file}"')
+        print(f'Недостаточно прав для записи в файл "{filename}"')
         if input(f'Продолжить выполнение программы? (да/нет): ').lower() == 'нет':
             return
     except Exception as exception:
